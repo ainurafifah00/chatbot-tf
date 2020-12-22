@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/ainurafifah/github/chatbot-tf/model.tflearn"
+all_model_checkpoint_paths: "/Users/ainurafifah/github/chatbot-tf/model.tflearn"
