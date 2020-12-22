@@ -50,7 +50,55 @@ print(len(classes), "classes", classes)
 print(len(words), "unique stemmed words", words)
 
 
+#BUILDING MODEL
+#create training data
+training = []
+output = []
 
+#create an empty array for output
+output_empty = [0] * len(classes)
+
+#create training set, bag of words
+for doc in documents:
+	bag = []
+	#list of tokenized words for the pattern
+	pattern_words = doc[0] 
+	#stemming each word
+	pattern_words = [stemmer.stem(word.lower()) for word in pattern_words]
+	#create bag of words array
+	for w in words:
+		bag.append(1) if w in pattern_words else bag.append(0)
+
+	output_row = list(output_empty)
+	output_row[classes.index(doc[1])] = 1
+
+	training.append([bag, output_row])
+
+
+#shuffling features and turning it it into np.array
+random.shuffle(training)
+training = np.array(training)
+
+
+#print(training)
+
+#creating training lists
+train_x = list(training[:,0])
+train_y = list(training[:,1])
+
+print("X", train_x)
+print("Y", train_y)
+
+
+#resetting underlying graph data
+tf.reset_default_graph()
+
+#Building neural network
+net = tflearn.input_data(shape=[None, len(train_x[0])])
+net = tflearn.fully_connected(net, 10)
+net = tflearn.fully_connected(net, 10)
+net = tflearn.fully_connected(net, len(train_y[0]), activation='softmax')
+net = tflearn.regression(net)
 
 
 
